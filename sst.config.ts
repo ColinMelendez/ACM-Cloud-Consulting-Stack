@@ -11,13 +11,13 @@ export default $config({
   },
   async run() {
 
-    const honoRestApiService = new sst.cloudflare.Worker("HonoService", {
+    const workerApiService = new sst.cloudflare.Worker("HonoService", {
       url: true,
       handler: "index.ts",
     });
 
     return {
-      api: honoRestApiService.url,
+      api: workerApiService.url,
     };
   },
 });
