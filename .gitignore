@@ -3,11 +3,12 @@
 .sst
 
 # dependencies
-node_modules/*
+node_modules
 .pnp
 .pnp.js
 
 # local env files
+*.env
 .env.local
 .env.development.local
 .env.test.local
