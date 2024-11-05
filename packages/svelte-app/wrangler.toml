@@ -2,6 +2,9 @@
 name = "svelte-app"
 compatibility_date = "2024-12-30"
 
+[assets]
+directory = "./build"
+
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
 # Configuration: https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs
