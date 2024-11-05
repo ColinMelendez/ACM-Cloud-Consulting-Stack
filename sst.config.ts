@@ -17,6 +17,9 @@ export default $config({
     });
 
     return {
+      /* This puts the url of the workerApiService (the HonoService) into the outputs.json file with the key "api".
+        It is being relied upon by the dev.sh script to pass the API URL to the frontend's environment variable.
+      */
       api: workerApiService.url,
     };
   },
