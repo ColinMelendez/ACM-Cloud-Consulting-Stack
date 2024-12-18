@@ -8,9 +8,15 @@ importers:
 
   .:
     dependencies:
+      blessed:
+        specifier: ^0.1.81
+        version: 0.1.81
+      hono:
+        specifier: ^4.6.15
+        version: 4.6.15
       sst:
         specifier: 3.4.39
-        version: 3.4.39
+        version: 3.4.39(hono@4.6.15)
     devDependencies:
       '@cloudflare/workers-types':
         specifier: 4.20241224.0
@@ -23,6 +29,15 @@ packages:
 
   aws4fetch@1.0.20:
     resolution: {integrity: sha512-/djoAN709iY65ETD6LKCtyyEI04XIBP5xVvfmNxsEP0uJB5tyaGBztSryRr4HqMStr9R06PisQE7m9zDTXKu6g==}
+
+  blessed@0.1.81:
+    resolution: {integrity: sha512-LoF5gae+hlmfORcG1M5+5XZi4LBmvlXTzwJWzUlPryN/SJdSflZvROM2TwkT0GMpq7oqT48NRd4GS7BiVBc5OQ==}
+    engines: {node: '>= 0.8.0'}
+    hasBin: true
+
+  hono@4.6.15:
+    resolution: {integrity: sha512-OiQwvAOAaI2JrABBH69z5rsctHDzFzIKJge0nYXgtzGJ0KftwLWcBXm1upJC23/omNRtnqM0gjRMbtXshPdqhQ==}
+    engines: {node: '>=16.9.0'}
 
   jose@4.15.9:
     resolution: {integrity: sha512-1vUQX+IdDMVPj4k8kOxgUqlcK518yluMuGZwqlr44FS1ppZB/5GWh4rZG89erpOBOJjU/OBsnCVFfapsRz6nEA==}
@@ -91,6 +106,10 @@ snapshots:
 
   aws4fetch@1.0.20: {}
 
+  blessed@0.1.81: {}
+
+  hono@4.6.15: {}
+
   jose@4.15.9: {}
 
   jose@5.2.3: {}
@@ -125,12 +144,13 @@ snapshots:
   sst-linux-x86@3.4.39:
     optional: true
 
-  sst@3.4.39:
+  sst@3.4.39(hono@4.6.15):
     dependencies:
       aws4fetch: 1.0.20
       jose: 5.2.3
       openid-client: 5.6.4
     optionalDependencies:
+      hono: 4.6.15
       sst-darwin-arm64: 3.4.39
       sst-darwin-x64: 3.4.39
       sst-linux-arm64: 3.4.39
