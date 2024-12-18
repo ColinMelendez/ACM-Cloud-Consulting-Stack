@@ -13,7 +13,7 @@ if [ "$1" = "production" ]; then
     svelte_command="pnpm run deploy"
 else
     sst_command="pnpx sst dev"
-    svelte_command="pnpm run preview"
+    svelte_command="pnpm run dev"
 fi
 
 
