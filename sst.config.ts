@@ -11,9 +11,36 @@ export default $config({
   },
   async run() {
 
+    const leadsDatabase = new sst.cloudflare.D1("leadsDb");
+
     const workerApiService = new sst.cloudflare.Worker("HonoService", {
       url: true,
-      handler: "index.ts",
+      handler: "packages/hono-api/src/index.ts",
+      link: [leadsDatabase],
+    });
+
+    new sst.x.DevCommand("Frontend", {
+      environment: {
+        API_URL: workerApiService.url,
+      },
+      dev: {
+        directory: "./packages/svelte-app",
+        command: "pnpm run wrapped-deploy-dev",
+        autostart: true,
+        title: "Frontend",
+      },
+    });
+
+    new sst.x.DevCommand("Migrations", {
+      environment: {
+        DB_NAME: leadsDatabase.nodes.database.name,
+      },
+      dev: {
+        directory: "./packages/database",
+        command: "pnpm run db:migrate",
+        autostart: true,
+        title: "Migrations",
+      },
     });
 
     return {
@@ -21,6 +48,7 @@ export default $config({
         It is being relied upon by the dev.sh script to pass the API URL to the frontend's environment variable.
       */
       api: workerApiService.url,
+      db: leadsDatabase.nodes.database.name,
     };
   },
 });

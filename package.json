@@ -4,15 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "./build_deployment.sh dev",
-    "deploy-production": "./build_deployment.sh production",
+    "dev": "pnpx sst dev",
+    "deploy-production": "sst deploy --stage production && cd packages/svelte-app && pnpm run wrapped-deploy-production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hono": "^4.6.15",
     "sst": "3.4.39"
   },
   "devDependencies": {
