@@ -1,0 +1,16 @@
+{
+  "name": "@acm-consulting/database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "db:migrate": "./migrate.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.10.5"
+  }
+}
