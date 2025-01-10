@@ -28,7 +28,6 @@ export default $config({
       link: [leadsDatabase],
     });
 
-
     new sst.x.DevCommand("Migrations", {
       environment: {
         DB_NAME: leadsDatabase.nodes.database.name,

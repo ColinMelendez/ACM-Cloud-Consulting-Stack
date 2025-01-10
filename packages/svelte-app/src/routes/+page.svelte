@@ -216,7 +216,7 @@
 			/* Vertical lines */
 				linear-gradient(to right, rgba(145, 145, 145, 0.636) 1px, transparent 1px),
 			/* Horizontal lines */
-				linear-gradient(to bottom, rgba(200, 200, 200, 0.469) 1px, transparent 1px);
+				linear-gradient(to bottom, rgba(200, 200, 200, 0.469) 2px, transparent 4px);
 		background-size:
 			150% 150%,
 			30px 30px,
@@ -264,7 +264,6 @@
 		clip-path: polygon(0 0, 50% 50px, 100% 0, 100% 100%, 0 100%);
 		margin-top: -40px;
 	}
-
 	.chevron-top-and-bottom {
 		clip-path: polygon(
 			0 0,
