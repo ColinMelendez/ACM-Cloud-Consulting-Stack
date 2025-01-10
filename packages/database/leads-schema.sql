@@ -1,11 +1,12 @@
-DROP TABLE IF EXISTS Customers;
-CREATE TABLE IF NOT EXISTS Customers (
-    CustomerId INTEGER PRIMARY KEY,
-    CompanyName TEXT,
-    ContactName TEXT
+-- Uncomment if you wan to reset the table for deployments
+-- DROP TABLE IF EXISTS Leads;
+CREATE TABLE IF NOT EXISTS Leads (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Email TEXT NOT NULL,
+    Name TEXT NOT NULL,
+    Company TEXT NOT NULL,
+    Message TEXT NOT NULL,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-INSERT INTO Customers (CustomerID, CompanyName, ContactName)
-VALUES (1, 'Alfreds Futterkiste', 'Maria Anders'),
-    (4, 'Around the Horn', 'Thomas Hardy'),
-    (11, 'Bs Beverages', 'Victoria Ashworth'),
-    (13, 'Bs Beverages', 'Random Name');
+
+CREATE INDEX IF NOT EXISTS idx_leads_email ON Leads(Email);

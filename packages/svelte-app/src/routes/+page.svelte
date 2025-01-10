@@ -1,19 +1,20 @@
 <script>
 	import ReactiveCursor from './ReactiveCursor.svelte';
 	import { onMount, onDestroy } from 'svelte';
+	import { enhance } from '$app/forms';
 	import { animate, inView, scroll} from 'motion';
 	import { fade } from 'svelte/transition';
 	import {
 		Globe,
 		Brain,
 		Palette,
-		Cloud
+		Cloud,
+		ArrowLeft
 	} from 'lucide-svelte';
 
 	onMount(() => {
 		document.querySelectorAll('.scroll-fade-block').forEach((item) => {
 			scroll(
-				// @ts-ignore
 				animate(item, { opacity: [0, 1, 1, 0] }),
 				{
 					target: item,
@@ -25,7 +26,6 @@
 		inView('.scroll-section', ({ target }) => {
 			animate(
 				target,
-				// @ts-ignore
 				{ opacity: 1, x: [-100, 0] },
 				{
 					duration: 0.9,
@@ -42,7 +42,6 @@
 
 	// Clean up interval when component is destroyed
 	onDestroy(() => {
-		// @ts-ignore
 		if (intervalId) {
 			clearInterval(intervalId);
 		}
@@ -50,14 +49,11 @@
 
 	const apiUrl = import.meta.env.VITE_API_URL;
 
-	let selectedService = 'web';
-	// @ts-ignore
+	let selectedService = $state('web');
 	let intervalId;
 
-	// @ts-ignore
 	function toggleService(service) {
 		// Clear the interval when user clicks
-		// @ts-ignore
 		if (intervalId) {
 			clearInterval(intervalId);
 			intervalId = null;
@@ -97,14 +93,16 @@
 			description: 'Scalable cloud infrastructure and serverless solutions using AWS, Azure, or Google Cloud Platform.'
 		}
 	];
+
+	let submitting = $state(false);
+	let message = $state(null);
 </script>
 
 <main>
 	<ReactiveCursor />
 	<section class="hero chevron-top">
 		<div class="section-content scroll-fade-block">
-			<h1>ACM Consulting</h1>
-			<p>API URL: {apiUrl}</p>
+			<h1>ACM Cloud Consulting</h1>
 			<p class="tagline">Student-led solutions for real-world challenges</p>
 		</div>
 	</section>
@@ -117,8 +115,8 @@
 					{#each services as service}
 						<div
 							class="service-card {selectedService === service.id ? 'active' : ''}"
-							on:click={() => toggleService(service.id)}
-							on:keydown={(e) => e.key === 'Enter' && toggleService(service.id)}
+							onclick={() => toggleService(service.id)}
+							onkeydown={(e) => e.key === 'Enter' && toggleService(service.id)}
 							role="button"
 							tabindex="0"
 							data-cursor={service.extendedTitle}
@@ -153,14 +151,46 @@
 	<section class="contact chevron-bottom">
 		<div class="section-content scroll-fade-block">
 			<h2 class="scroll-section">Get In Touch</h2>
-			<form class="contact-form">
-				<input class="scroll-section" type="text" placeholder="Name" required />
-				<input class="scroll-section" type="text" placeholder="Company" required />
-				<input class="scroll-section" type="email" placeholder="Email" required />
-				<textarea class="scroll-section" placeholder="Tell us about your project" rows="4" required
-				></textarea>
-				<button class="scroll-section" type="submit">Send Message</button>
-			</form>
+			<div class="form-container">
+				<form
+					class="contact-form"
+					action={`${apiUrl}/leads`}
+					method="POST"
+					use:enhance={() => {
+						submitting = true;
+						return async ({ result }) => {
+							submitting = false;
+							if (result.type === 'success') {
+								message = 'success';
+							} else {
+								message = 'error';
+							}
+						};
+					}}
+				>
+					<input class="scroll-section" name="name" type="text" placeholder="Name" required />
+					<input class="scroll-section" name="company" type="text" placeholder="Company" required />
+					<input class="scroll-section" name="email" type="email" placeholder="Email" required />
+					<textarea
+						class="scroll-section"
+						name="message"
+						placeholder="how can we help you?"
+						rows="4"
+						required
+					></textarea>
+					<button class="scroll-section" type="submit" disabled={submitting}>
+						{submitting ? 'Sending...' : 'Send Message'}
+					</button>
+				</form>
+				{#if message === 'error'}
+					<div class="success-overlay" transition:fade>
+						<button class="back-button" onclick={() => message = null}>
+							<ArrowLeft size={34} />
+						</button>
+						<h1>Thanks for reaching out!</h1>
+					</div>
+				{/if}
+			</div>
 		</div>
 	</section>
 </main>
@@ -382,4 +412,44 @@
 			transform: translateX(0);
 		}
 	}
+
+	.form-container {
+		position: relative;
+	}
+
+	.success-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(
+			circle at center,
+			rgba(255, 255, 255, 0.95),
+			rgba(180, 180, 183, 0.056)
+		);
+		backdrop-filter: blur(4px);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.5rem;
+		color: #2d3748;
+	}
+
+	.back-button {
+		position: absolute;
+		top: 20%;
+		left: 15%;
+		color: #2d3748;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 1rem;
+		transition: opacity 0.2s;
+	}
+
+	.back-button:hover {
+		background-color: #2d374800;
+	}
 </style>
+

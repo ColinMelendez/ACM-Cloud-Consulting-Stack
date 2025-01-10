@@ -1,22 +1,28 @@
-import { Hono } from 'hono'
-import { Resource } from 'sst'
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { Resource } from 'sst';
 
-const app = new Hono()
+const app = new Hono();
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
-.get('/leads/:email/:name/:message', async (c) => {
-  const { email, name, message } = c.req.param()
+app
+	.use('*', cors())
+	.get('/', (c) => {
+		return c.text('Hello Hono!');
+	})
+	.post('/leads', async (c) => {
+		const data = await c.req.parseBody();
+		const { email, name, company, message } = data;
 
-  // await Resource
-  await Resource.leadsDb.prepare(
-    'INSERT INTO leads (name, email, message) VALUES (?1, ?2, ?3)'
-  )
-  .bind(name, email, message)
-  .run();
+		try {
+			await Resource.leadsDb
+				.prepare('INSERT INTO leads (email, name, company, message) VALUES (?1, ?2, ?3, ?4)')
+				.bind(email, name, company, message)
+				.run();
 
-  return c.json({ message: 'Lead added' })
-});
+			return c.json({ success: true }, 200);
+		} catch (error) {
+			return c.json({ success: false }, 500);
+		}
+	});
 
-export default app
+export default app;

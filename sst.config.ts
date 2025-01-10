@@ -11,6 +11,15 @@ export default $config({
   },
   async run() {
 
+    new sst.x.DevCommand("Frontend", {
+      dev: {
+        directory: "./packages/svelte-app",
+        command: "pnpm run wrapped-deploy-dev",
+        autostart: true,
+        title: "Frontend",
+      },
+    });
+
     const leadsDatabase = new sst.cloudflare.D1("leadsDb");
 
     const workerApiService = new sst.cloudflare.Worker("HonoService", {
@@ -19,17 +28,6 @@ export default $config({
       link: [leadsDatabase],
     });
 
-    new sst.x.DevCommand("Frontend", {
-      environment: {
-        API_URL: workerApiService.url,
-      },
-      dev: {
-        directory: "./packages/svelte-app",
-        command: "pnpm run wrapped-deploy-dev",
-        autostart: true,
-        title: "Frontend",
-      },
-    });
 
     new sst.x.DevCommand("Migrations", {
       environment: {
