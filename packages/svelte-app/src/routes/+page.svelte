@@ -203,7 +203,6 @@
 	main {
 		min-height: 100vh;
 		margin: -20px;
-		padding: 20px;
 		overflow-x: hidden;
 		background-color: #ede4dc;
 		background-image:
@@ -237,10 +236,10 @@
 	}
 
 	section {
-		height: 80vh;
+		height: 90vh;
 		width: 120%;
 		/* max-width: 1200px; */
-		padding: 4rem 2rem;
+		/* padding: 4rem 2rem; */
 	}
 
 	/* Add a container inside each section for content width control */
@@ -252,7 +251,7 @@
 
 	.hero {
 		text-align: center;
-		min-height: 60vh;
+		min-height: 90vh;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -360,7 +359,9 @@
 	}
 
 	.contact {
-		height: 70vh;
+		height: 80vh;
+		margin-bottom: 0;
+		padding-bottom: 0;
 		background-image: linear-gradient(to bottom, #fffdf75a, #e086195a);
 	}
 

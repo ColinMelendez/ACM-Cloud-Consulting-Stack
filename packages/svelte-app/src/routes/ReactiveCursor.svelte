@@ -34,14 +34,17 @@
 	const cursorStore = createCursorStore();
 
 	export function useCursor() {
-		document.addEventListener('mousemove', (e: MouseEvent) =>
-			cursorStore.setCoords({ x: e.clientX, y: e.clientY })
-		);
-		document.querySelectorAll('[data-cursor]').forEach((el) => {
-			const target = el as HTMLElement;
-			target.addEventListener('mouseenter', (e: MouseEvent) => cursorStore.setText(e));
-			target.addEventListener('mouseleave', () => cursorStore.clearText());
-		});
+		// Only add mouse events if not on a touch device
+		if (!('ontouchstart' in window)) {
+			document.addEventListener('mousemove', (e: MouseEvent) =>
+				cursorStore.setCoords({ x: e.clientX, y: e.clientY })
+			);
+			document.querySelectorAll('[data-cursor]').forEach((el) => {
+				const target = el as HTMLElement;
+				target.addEventListener('mouseenter', (e: MouseEvent) => cursorStore.setText(e));
+				target.addEventListener('mouseleave', () => cursorStore.clearText());
+			});
+		}
 	}
 </script>
 
@@ -92,5 +95,11 @@
 	/* Remove the global cursor styles since we're not using them anymore */
 	:global(body), :global(a) {
 		cursor: default;
+	}
+
+	@media (hover: none) and (pointer: coarse) {
+		.cursor-tooltip {
+			display: none;
+		}
 	}
 </style>
