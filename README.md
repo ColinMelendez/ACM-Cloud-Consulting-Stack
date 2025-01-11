@@ -23,11 +23,11 @@ This includes:
     - Provisioning a worker API endpoint backend.
     - Starting a local Vite development server for the front end, and binding it to the worker API endpoint.
 
-All of these are created as-needed on a per-developer basis via sst, and are re-used whenever the same developer starts their development stack with `pnpm run dev'. All of these feature hot-reloading for local changes made while the sst dev shell remains open.
+All of these are created as-needed on a per-developer basis via sst, and are re-used whenever the same developer starts their development stack with `pnpm run dev`. All of these feature hot-reloading for local changes made while the sst dev shell remains open.
+
+Resources created by developers using `pnpm run dev` will not affect production deployment resources.
 
 ## Production Deployment
-
-Resources created by developers using pnpm run dev will not affect production environment's resources.
 
 To deploy the project to production, execute
 
@@ -40,5 +40,5 @@ which will:
     - Update the script running in the workers with a rolling deployment (new connection redirected)
     - build the frontend and deploy it to a worker with static assets via wrangler
 
-Note that migrations are NOT run on the database automatically. Migrations of production should be run manually by visiting `packages/database` and executing migrations.sql on the production database via wrangler. This is intended to ensure that whoever is running the migrations has a sufficient amount of intent to their actions to mitigate the possibility of data loss.
+Note that migrations are NOT run on the database automatically. Migrations of production should be run manually by visiting `packages/database` and executing `migrations.sql` on the production database via wrangler. This is intended to ensure that whoever is running the migrations has a sufficient amount of intent to their actions to mitigate the possibility of data loss. See the Cloudflare D1 docs for more information, and take a look at the `migrate.sh` script to see the template being used on the deployment databases (You can basically just swap the name of the production database into that command).
 
